@@ -13,6 +13,7 @@ Public Class Form1
     Dim day As String
     Dim year As String
     Dim strDate As String
+    Dim yearMonth As String
 
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -20,6 +21,7 @@ Public Class Form1
         today = Date.Today()
 
         strDate = today.ToString("dd MMM yyyy")
+        yearMonth = today.ToString("yyyy-MM")
         day = today.ToString("dd")
         month = today.ToString("MMM")
         year = today.ToString("yyyy")
@@ -28,6 +30,12 @@ Public Class Form1
         dailyrevenue_title.Text = "DAILY REVENUE " + day + " " + month.ToUpper
         monthlyrevenue_title.Text = "MONTHLY REVENUE " + month.ToUpper + " " + year
         yearlyrevenue_title.Text = "YEARLY REVENUE " + year
+
+        from_date.Format = DateTimePickerFormat.Custom
+        from_date.CustomFormat = "yyyy-MM-dd"
+
+        to_date.Format = DateTimePickerFormat.Custom
+        to_date.CustomFormat = "yyyy-MM-dd"
 
         transactions_listview.Columns.Add("NAME", 180)
         transactions_listview.Columns.Add("AMOUNT", 100)
@@ -38,6 +46,8 @@ Public Class Form1
 
 
 
+        getTransactions("http://zorowtech.com/test.php", "refresh", "yes", "none", "none")
+
         
 
 
@@ -47,21 +57,22 @@ Public Class Form1
 
     Private Sub searchtransactions_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles searchtransactions_btn.Click
 
-        MsgBox(from_date.Text)
+
+
+        getTransactions("http://zorowtech.com/test.php", "from", from_date.Text, "to", to_date.Text)
 
 
     End Sub
 
-    Private Sub refresh_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles refresh_btn.Click
+    Private Sub getTransactions(ByVal url As String, ByVal a As String, ByVal aValue As String, ByVal b As String, ByVal bValue As String)
 
-        Dim user As String
-        Dim pass As String
+      
 
         Try
-            Dim request As WebRequest = WebRequest.Create("http://zorowtech.com/test.php")
+            Dim request As WebRequest = WebRequest.Create(url)
             request.Method = "POST"
             Dim postData As String
-            postData = "username=" & user & "&password=" & pass
+            postData = a & "=" & aValue & "&" & b & "=" & bValue
             Dim byteArray As Byte() = Encoding.UTF8.GetBytes(postData)
             request.ContentType = "application/x-www-form-urlencoded"
             request.ContentLength = byteArray.Length
@@ -74,23 +85,26 @@ Public Class Form1
             Dim reader As New StreamReader(dataStream)
             Dim responseFromServer As String = reader.ReadToEnd()
             If responseFromServer.Contains("]") Then
-               
+
+                transactions_listview.Items.Clear()
 
                 Dim jlist As JArray = JArray.Parse(responseFromServer)
                 Dim name As String
                 Dim firstname As String
                 Dim middlename As String
                 Dim lastname As String
-                Dim amount As Single
+                Dim amount As Single = 0
+                Dim yearly_amount As Single = 0
+                Dim monthly_amount As Single = 0
+                Dim daily_amount As Single = 0
                 Dim phonenumber As String
                 Dim transaction_number As String
                 Dim gotDate As String
                 Dim gotDateTime As String
-                Dim total As Single
+                Dim total As Single = 0
 
                 Dim arr(6) As String
                 Dim itm As ListViewItem
-
                 Dim jb As JObject = Nothing
                 For i As Integer = 0 To jlist.Count - 1
                     jb = JObject.Parse(jlist(i).ToString())
@@ -111,6 +125,23 @@ Public Class Form1
 
                     gotDate = jb("DATE")
 
+                    If gotDate.Contains(year) Then
+
+                        yearly_amount += amount
+
+                    End If
+
+                    If gotDate.Contains(yearMonth) Then
+
+                        monthly_amount += amount
+                    End If
+
+                    If gotDate.Contains(strDate) Then
+
+                        daily_amount += amount
+
+                    End If
+
                     gotDateTime = jb("DATETIME")
 
 
@@ -127,8 +158,27 @@ Public Class Form1
 
                 Next
 
+                If a.Contains("phonenumber") Or a.Contains("from") Then
+
+                    accountbalance_title.Text = "TRANSACTION VALUE"
+
+                Else
+
+                    accountbalance_title.Text = "ACCOUNT BALANCE"
+
+                    yearlyrevenue.Text = "Ksh " + yearly_amount.ToString
+
+                    monthlyrevenue.Text = "Ksh " + monthly_amount.ToString
+
+                    dailyrevenue.Text = "Ksh " + daily_amount.ToString
+
+                End If
+
+
+
                 account_amount.Text = "Ksh " + total.ToString
 
+                
             Else
                 MsgBox(responseFromServer)
 
@@ -143,6 +193,50 @@ Public Class Form1
 
             MsgBox(msg.Message)
         End Try
+
+
+
+
+    End Sub
+
+    Private Sub refresh_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles refresh_btn.Click
+
+
+
+        getTransactions("http://zorowtech.com/test.php", "refresh", "yes", "none", "none")
+
+
+
+
+
+    End Sub
+
+    Private Sub searchphonenumber_btn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles searchphonenumber_btn.Click
+        Dim gotphonenumber As String
+        Dim gotlength As Single
+
+        gotphonenumber = phonenumber.Text
+
+        gotlength = gotphonenumber.Length()
+
+
+        If gotlength.Equals(13) Then
+
+
+
+            getTransactions("http://zorowtech.com/test.php", "phonenumber", gotphonenumber, "none", "none")
+
+
+        Else
+
+            MsgBox("Input a valid phonenumber")
+
+        End If
+
+
+
+
+
 
 
 

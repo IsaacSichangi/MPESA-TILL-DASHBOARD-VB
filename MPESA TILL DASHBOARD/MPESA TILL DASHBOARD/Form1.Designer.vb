@@ -41,7 +41,7 @@ Partial Class Form1
         Me.dailyrevenue = New System.Windows.Forms.Label()
         Me.dailyrevenue_title = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.Label4 = New System.Windows.Forms.Label()
+        Me.monthlyrevenue = New System.Windows.Forms.Label()
         Me.monthlyrevenue_title = New System.Windows.Forms.Label()
         Me.refresh_btn = New System.Windows.Forms.Button()
         Me.phonenumber = New System.Windows.Forms.TextBox()
@@ -170,9 +170,9 @@ Partial Class Form1
         '
         Me.accountbalance_title.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, CType(0, Byte))
         Me.accountbalance_title.ForeColor = System.Drawing.Color.White
-        Me.accountbalance_title.Location = New System.Drawing.Point(44, 13)
+        Me.accountbalance_title.Location = New System.Drawing.Point(3, 13)
         Me.accountbalance_title.Name = "accountbalance_title"
-        Me.accountbalance_title.Size = New System.Drawing.Size(124, 13)
+        Me.accountbalance_title.Size = New System.Drawing.Size(210, 13)
         Me.accountbalance_title.TabIndex = 9
         Me.accountbalance_title.Text = "ACCOUNT BALANCE"
         Me.accountbalance_title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -212,23 +212,23 @@ Partial Class Form1
         'Panel3
         '
         Me.Panel3.BackColor = System.Drawing.Color.SteelBlue
-        Me.Panel3.Controls.Add(Me.Label4)
+        Me.Panel3.Controls.Add(Me.monthlyrevenue)
         Me.Panel3.Controls.Add(Me.monthlyrevenue_title)
         Me.Panel3.Location = New System.Drawing.Point(583, 50)
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(235, 96)
         Me.Panel3.TabIndex = 3
         '
-        'Label4
+        'monthlyrevenue
         '
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.ForeColor = System.Drawing.Color.White
-        Me.Label4.Location = New System.Drawing.Point(2, 34)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(230, 49)
-        Me.Label4.TabIndex = 11
-        Me.Label4.Text = "Ksh 0"
-        Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.monthlyrevenue.Font = New System.Drawing.Font("Microsoft Sans Serif", 20.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.monthlyrevenue.ForeColor = System.Drawing.Color.White
+        Me.monthlyrevenue.Location = New System.Drawing.Point(2, 34)
+        Me.monthlyrevenue.Name = "monthlyrevenue"
+        Me.monthlyrevenue.Size = New System.Drawing.Size(230, 49)
+        Me.monthlyrevenue.TabIndex = 11
+        Me.monthlyrevenue.Text = "Ksh 0"
+        Me.monthlyrevenue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'monthlyrevenue_title
         '
@@ -253,10 +253,11 @@ Partial Class Form1
         'phonenumber
         '
         Me.phonenumber.Location = New System.Drawing.Point(9, 28)
-        Me.phonenumber.MaxLength = 10
+        Me.phonenumber.MaxLength = 13
         Me.phonenumber.Name = "phonenumber"
         Me.phonenumber.Size = New System.Drawing.Size(163, 20)
         Me.phonenumber.TabIndex = 7
+        Me.phonenumber.Text = "+254"
         '
         'searchphonenumber_btn
         '
@@ -431,7 +432,7 @@ Partial Class Form1
     Friend WithEvents account_amount As System.Windows.Forms.Label
     Friend WithEvents dailyrevenue As System.Windows.Forms.Label
     Friend WithEvents dailyrevenue_title As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents monthlyrevenue As System.Windows.Forms.Label
     Friend WithEvents monthlyrevenue_title As System.Windows.Forms.Label
     Friend WithEvents Panel4 As System.Windows.Forms.Panel
     Friend WithEvents yearlyrevenue As System.Windows.Forms.Label
