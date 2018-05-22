@@ -14,6 +14,7 @@ Public Class Form1
     Dim year As String
     Dim strDate As String
     Dim yearMonth As String
+    Dim curDate As String
 
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -25,8 +26,12 @@ Public Class Form1
         day = today.ToString("dd")
         month = today.ToString("MMM")
         year = today.ToString("yyyy")
+        curDate = today.ToString("yyy-MM-dd")
+
+
 
         Me.Text = "MPESA TILL DASHBOARD " + strDate
+        accountbalance_title.Text = "TRANSACTION VALUE"
         dailyrevenue_title.Text = "DAILY REVENUE " + day + " " + month.ToUpper
         monthlyrevenue_title.Text = "MONTHLY REVENUE " + month.ToUpper + " " + year
         yearlyrevenue_title.Text = "YEARLY REVENUE " + year
@@ -136,7 +141,7 @@ Public Class Form1
                         monthly_amount += amount
                     End If
 
-                    If gotDate.Contains(strDate) Then
+                    If gotDate.Contains(curDate) Then
 
                         daily_amount += amount
 
@@ -158,27 +163,19 @@ Public Class Form1
 
                 Next
 
-                If a.Contains("phonenumber") Or a.Contains("from") Then
-
-                    accountbalance_title.Text = "TRANSACTION VALUE"
-
-                Else
-
-                    accountbalance_title.Text = "ACCOUNT BALANCE"
-
-                    yearlyrevenue.Text = "Ksh " + yearly_amount.ToString
-
-                    monthlyrevenue.Text = "Ksh " + monthly_amount.ToString
-
-                    dailyrevenue.Text = "Ksh " + daily_amount.ToString
-
-                End If
 
 
+
+
+                yearlyrevenue.Text = "Ksh " + yearly_amount.ToString
+
+                monthlyrevenue.Text = "Ksh " + monthly_amount.ToString
+
+                dailyrevenue.Text = "Ksh " + daily_amount.ToString
 
                 account_amount.Text = "Ksh " + total.ToString
 
-                
+
             Else
                 MsgBox(responseFromServer)
 
